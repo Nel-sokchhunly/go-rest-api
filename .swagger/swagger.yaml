@@ -1,0 +1,212 @@
+definitions:
+  book.DTO:
+    properties:
+      author:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      image_url:
+        type: string
+      published_date:
+        type: string
+      title:
+        type: string
+    type: object
+  book.Form:
+    properties:
+      author:
+        type: string
+      description:
+        type: string
+      image_url:
+        type: string
+      published_date:
+        type: string
+      title:
+        type: string
+    type: object
+  err.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  err.Errors:
+    properties:
+      errors:
+        items:
+          $ref: '#/definitions/err.Error'
+        type: array
+    type: object
+info:
+  contact: {}
+  description: This is a sample server Go REST API server with Folder Structure.
+  license:
+    name: MIT License
+    url: http://opensource.org/licenses/MIT
+  title: Go REST API
+  version: "1.0"
+paths:
+  /api/v1:
+    get:
+      responses: {}
+  /books:
+    get:
+      consumes:
+      - application/json
+      description: get all books
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/book.DTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: List Books
+      tags:
+      - books
+    post:
+      consumes:
+      - application/json
+      description: create a new book
+      parameters:
+      - description: Book form
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/book.Form'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/book.DTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/err.Errors'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Create Book
+      tags:
+      - books
+  /books/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Delete book
+      tags:
+      - books
+    get:
+      consumes:
+      - application/json
+      description: Read book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/book.DTO'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Read book
+      tags:
+      - books
+    put:
+      consumes:
+      - application/json
+      description: Update book
+      parameters:
+      - description: Book ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Book form
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/book.Form'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/err.Error'
+        "404":
+          description: Not Found
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/err.Errors'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/err.Error'
+      summary: Update book
+      tags:
+      - books
+  /health:
+    get:
+      description: Health Check
+      responses:
+        "200":
+          description: OK
+      summary: Health Check
+      tags:
+      - Health
+swagger: "2.0"
